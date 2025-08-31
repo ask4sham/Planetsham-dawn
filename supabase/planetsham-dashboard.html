@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlanetSham - Social Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #0f1419;
+            color: #e7e9ea;
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 240px;
+            background-color: #1a2228;
+            padding: 20px;
+            height: 100vh;
+            position: fixed;
+            border-right: 1px solid #2f3336;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1d9bf0;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+        }
+        
+        .menu-item {
+            padding: 12px 0;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .menu-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .menu-item:hover {
+            color: #1d9bf0;
+        }
+        
+        .main-content {
+            flex: 1;
+            margin-left: 240px;
+            padding: 20px;
+            max-width: 1000px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #2f3336;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+        }
+        
+        .search-box {
+            background-color: #1a2228;
+            border-radius: 20px;
+            padding: 10px 15px;
+            width: 300px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-box input {
+            background: transparent;
+            border: none;
+            color: #e7e9ea;
+            margin-left: 10px;
+            width: 100%;
+            outline: none;
+        }
+        
+        .trending-section, .tech-news, .who-to-follow, .recent-chats {
+            background-color: #1a2228;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #2f3336;
+        }
+        
+        .trend-item, .follow-item, .chat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #2f3336;
+        }
+        
+        .trend-item:last-child, .follow-item:last-child, .chat-item:last-child {
+            border-bottom: none;
+        }
+        
+        .trend-rank {
+            font-weight: bold;
+            color: #1d9bf0;
+            margin-right: 10px;
+        }
+        
+        .trend-tag {
+            font-weight: bold;
+        }
+        
+        .trend-posts {
+            color: #71767b;
+            font-size: 14px;
+        }
+        
+        .tech-news-content {
+            padding: 15px 0;
+        }
+        
+        .news-reactions {
+            display: flex;
+            margin-top: 15px;
+            color: #71767b;
+        }
+        
+        .reaction {
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .reaction i {
+            margin-right: 5px;
+        }
+        
+        .follow-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .follow-info {
+            flex: 1;
+            margin-left: 15px;
+        }
+        
+        .follow-name {
+            font-weight: bold;
+        }
+        
+        .follow-handle {
+            color: #71767b;
+            font-size: 14px;
+        }
+        
+        .follow-btn {
+            background-color: #1d9bf0;
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .chat-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .chat-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #1d9bf0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+        
+        .chat-info {
+            flex: 1;
+        }
+        
+        .chat-name {
+            font-weight: bold;
+        }
+        
+        .chat-preview {
+            color: #71767b;
+            font-size: 14px;
+        }
+        
+        .chat-time {
+            color: #71767b;
+            font-size: 12px;
+        }
+        
+        .comment-box {
+            background-color: #1a2228;
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .comment-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #1d9bf0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+        
+        .comment-input {
+            flex: 1;
+            background-color: #2f3336;
+            border: none;
+            border-radius: 20px;
+            padding: 12px 20px;
+            color: #e7e9ea;
+            outline: none;
+        }
+        
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .supabase-section {
+            background-color: #1a2228;
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .supabase-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .supabase-btn {
+            background-color: #3ecf8e;
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            flex: 1;
+            min-width: 120px;
+        }
+        
+        .data-display {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #2f3336;
+            border-radius: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-connected {
+            background-color: #3ecf8e;
+        }
+        
+        .status-disconnected {
+            background-color: #ff6b6b;
+        }
+        
+        .success {
+            color: #3ecf8e;
+        }
+        
+        .error {
+            color: #ff6b6b;
+        }
+        
+        @media (max-width: 1000px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                width: 80px;
+                padding: 20px 10px;
+            }
+            
+            .logo span, .menu-item span {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 80px;
+            }
+            
+            .search-box {
+                width: 200px;
+            }
+        }
+        
+        @media (max-width: 700px) {
+            body {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 15px;
+            }
+            
+            .logo span, .menu-item span {
+                display: inline;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .search-box {
+                width: 100%;
+                margin-top: 15px;
+            }
+            
+            .supabase-controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <i class="fas fa-globe"></i>
+            <span>PlanetSham</span>
+        </div>
+        <div class="menu-items">
+            <div class="menu-item"><i class="fas fa-home"></i> <span>Home</span></div>
+            <div class="menu-item"><i class="fas fa-hashtag"></i> <span>Explore</span></div>
+            <div class="menu-item"><i class="fas fa-bell"></i> <span>Notifications</span></div>
+            <div class="menu-item"><i class="fas fa-envelope"></i> <span>Messages</span></div>
+            <div class="menu-item"><i class="fas fa-bookmark"></i> <span>Bookmarks</span></div>
+            <div class="menu-item"><i class="fas fa-user"></i> <span>Profile</span></div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>What's happening?</h1>
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search PlanetSham">
+            </div>
+        </div>
+
+        <div class="grid-container">
+            <div class="left-column">
+                <div class="trending-section">
+                    <h2 class="section-title">Trending Worldwide</h2>
+                    <div id="trending-content">
+                        <p>Loading trending topics...</p>
+                    </div>
+                </div>
+
+                <div class="tech-news">
+                    <h2 class="section-title">Tech News</h2>
+                    <div id="tech-news-content">
+                        <p>Loading tech news...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-column">
+                <div class="who-to-follow">
+                    <h2 class="section-title">Who to Follow</h2>
+                    <div id="follow-suggestions">
+                        <p>Loading suggestions...</p>
+                    </div>
+                </div>
+
+                <div class="recent-chats">
+                    <h2 class="section-title">Recent Chats</h2>
+                    <div id="recent-chats-content">
+                        <p>Loading chats...</p>
+                    </div>
+                </div>
+
+                <div class="trending-section">
+                    <h2 class="section-title">Trending in Tech</h2>
+                    <div id="tech-trending-content">
+                        <p>Loading tech trends...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Supabase Integration Section -->
+        <div class="supabase-section">
+            <h2 class="section-title">
+                <span class="status-indicator status-connected"></span>
+                Supabase Connection - Active
+            </h2>
+            <p>Your Supabase project: <strong>onxmetgbzgkkghzymaqt.supabase.co</strong></p>
+            <p class="success">All tables created successfully! Now let's add some data.</p>
+            
+            <div class="supabase-controls">
+                <button class="supabase-btn" id="insertSampleData">Insert Sample Data</button>
+                <button class="supabase-btn" id="loadRealData">Load Real Data</button>
+                <button class="supabase-btn" id="clearData">Clear Data</button>
+            </div>
+            
+            <div class="data-display" id="dataDisplay">
+                <p>Ready to add sample data to your database.</p>
+            </div>
+        </div>
+
+        <div class="comment-box">
+            <div class="comment-avatar">U</div>
+            <input type="text" class="comment-input" placeholder="Write a comment..." id="postInput">
+        </div>
+    </div>
+
+    <!-- Include Supabase Client Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <script>
+        // Initialize Supabase with your credentials
+        const supabaseUrl = 'https://onxmetgbzgkkghzymaqt.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9ueG1ldGdiemdra2doenltYXF0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY1NzA3MjcsImV4cCI6MjA3MjE0NjcyN30.zG5G-uqxiA7Vv57U3INUGRr1YHUSo-8nL16BcGmVupc';
+        
+        // Create Supabase client
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+        
+        // DOM elements
+        const insertSampleDataBtn = document.getElementById('insertSampleData');
+        const loadRealDataBtn = document.getElementById('loadRealData');
+        const clearDataBtn = document.getElementById('clearData');
+        const dataDisplay = document.getElementById('dataDisplay');
+        const postInput = document.getElementById('postInput');
+        
+        // Sample data for demonstration
+        const sampleUsers = [
+            { username: 'elonmusk', full_name: 'Elon Musk', avatar_url: '' },
+            { username: 'taylorswift', full_name: 'Taylor Swift', avatar_url: '' },
+            { username: 'nasa', full_name: 'NASA', avatar_url: '' },
+            { username: 'techlover', full_name: 'Tech Enthusiast', avatar_url: '' }
+        ];
+        
+        const sampleTrending = [
+            { name: 'AAlRevolution', post_count: 125000, rank: 1 },
+            { name: 'SpaceX Launch', post_count: 69000, rank: 2 },
+            { name: '#WorldCup2026', post_count: 76000, rank: 3 },
+            { name: 'Climate Change', post_count: 64000, rank: 4 }
+        ];
+        
+        const sampleTechTrending = [
+            { name: 'Web Development', post_count: 45000 },
+            { name: 'AI Ethics', post_count: 35000 },
+            { name: 'Blockchain', post_count: 26000 }
+        ];
+        
+        // Insert sample data
+        insertSampleDataBtn.addEventListener('click', async () => {
+            dataDisplay.innerHTML = '<p>Inserting sample data...</p>';
+            
+            try {
+                // Insert users
+                const { data: userData, error: userError } = await supabase
+                    .from('users')
+                    .insert(sampleUsers)
+                    .select();
+                
+                if (userError) {
+                    dataDisplay.innerHTML = `<p class="error">Error inserting users: ${userError.message}</p>`;
+                    return;
+                }
+                
+                // Insert trending topics
+                const { data: trendingData, error: trendingError } = await supabase
+                    .from('trending_topics')
+                    .insert(sampleTrending);
+                
+                if (trendingError) {
+                    dataDisplay.innerHTML = `<p class="error">Error inserting trending topics: ${trendingError.message}</p>`;
+                    return;
+                }
+                
+                // Insert tech trending
+                const { data: techTrendingData, error: techTrendingError } = await supabase
+                    .from('trending_topics')
+                    .insert(sampleTechTrending);
+                
+                if (techTrendingError) {
+                    dataDisplay.innerHTML = `<p class="error">Error inserting tech trends: ${techTrendingError.message}</p>`;
+                    return;
+                }
+                
+                dataDisplay.innerHTML = `
+                    <p class="success">✅ Sample data inserted successfully!</p>
+                    <p>Added:</p>
+                    <ul>
+                        <li>${sampleUsers.length} users</li>
+                        <li>${sampleTrending.length + sampleTechTrending.length} trending topics</li>
+                    </ul>
+                    <p>Click "Load Real Data" to display the content.</p>
+                `;
+                
+            } catch (error) {
+                dataDisplay.innerHTML = `<p class="error">Error inserting data: ${error.message}</p>`;
+            }
+        });
+        
+        // Load real data from database
+        loadRealDataBtn.addEventListener('click', async () => {
+            dataDisplay.innerHTML = '<p>Loading data from database...</p>';
+            
+            try {
+                // Load trending topics
+                const { data: trendingData, error: trendingError } = await supabase
+                    .from('trending_topics')
+                    .select('*')
+                    .order('rank', { ascending: true, nullsFirst: false })
+                    .order('post_count', { ascending: false });
+                
+                if (trendingError) throw trendingError;
+                
+                // Display trending topics
+                const trendingContent = document.getElementById('trending-content');
+                if (trendingData && trendingData.length > 0) {
+                    trendingContent.innerHTML = trendingData.map(topic => `
+                        <div class="trend-item">
+                            <div>
+                                <span class="trend-rank">#${topic.rank || '-'}</span>
+                                <span class="trend-tag">${topic.name}</span>
+                            </div>
+                            <span class="trend-posts">${topic.post_count.toLocaleString()} posts</span>
+                        </div>
+                    `).join('');
+                } else {
+                    trendingContent.innerHTML = '<p>No trending topics found.</p>';
+                }
+                
+                // Load tech trends
+                const techTrendingContent = document.getElementById('tech-trending-content');
+                if (trendingData && trendingData.length > 0) {
+                    // Filter for tech trends (simplified approach)
+                    const techTrends = trendingData.filter(topic => 
+                        topic.name.includes('Web') || topic.name.includes('AI') || topic.name.includes('Blockchain')
+                    );
+                    
+                    techTrendingContent.innerHTML = techTrends.map(topic => `
+                        <div class="trend-item">
+                            <span class="trend-tag">${topic.name}</span>
+                            <span class="trend-posts">${topic.post_count.toLocaleString()} posts</span>
+                        </div>
+                    `).join('');
+                } else {
+                    techTrendingContent.innerHTML = '<p>No tech trends found.</p>';
+                }
+                
+                // Load users for follow suggestions
+                const { data: userData, error: userError } = await supabase
+                    .from('users')
+                    .select('*')
+                    .limit(3);
+                
+                if (userError) throw userError;
+                
+                const followSuggestions = document.getElementById('follow-suggestions');
+                if (userData && userData.length > 0) {
+                    followSuggestions.innerHTML = userData.map(user => `
+                        <div class="follow-item">
+                            <div class="chat-avatar">${user.username[0]?.toUpperCase()}</div>
+                            <div class="follow-info">
+                                <div class="follow-name">${user.full_name}</div>
+                                <div class="follow-handle">@${user.username}</div>
+                            </div>
+                            <button class="follow-btn">Follow</button>
+                        </div>
+                    `).join('');
+                } else {
+                    followSuggestions.innerHTML = '<p>No users found.</p>';
+                }
+                
+                dataDisplay.innerHTML = `<p class="success">✅ Data loaded successfully from database!</p>`;
+                
+            } catch (error) {
+                dataDisplay.innerHTML = `<p class="error">Error loading data: ${error.message}</p>`;
+            }
+        });
+        
+        // Clear data
+        clearDataBtn.addEventListener('click', async () => {
+            dataDisplay.innerHTML = '<p>Clearing data...</p>';
+            
+            try {
+                // Note: In a real app, you might want to be more selective about what to delete
+                const { error: trendingError } = await supabase
+                    .from('trending_topics')
+                    .delete()
+                    .neq('id', 0); // Delete all trending topics
+                
+                if (trendingError) throw trendingError;
+                
+                dataDisplay.innerHTML = `<p class="success">✅ Data cleared successfully!</p>`;
+                
+                // Refresh the displayed data
+                document.getElementById('trending-content').innerHTML = '<p>No trending topics found.</p>';
+                document.getElementById('tech-trending-content').innerHTML = '<p>No tech trends found.</p>';
+                
+            } catch (error) {
+                dataDisplay.innerHTML = `<p class="error">Error clearing data: ${error.message}</p>`;
+            }
+        });
+        
+        // Post a new comment
+        postInput.addEventListener('keypress', async function(e) {
+            if (e.key === 'Enter' && this.value.trim() !== '') {
+                try {
+                    // In a real app, you would:
+                    // 1. Get the current user's ID from authentication
+                    // 2. Insert the post into the database
+                    // 3. Update the UI
+                    
+                    alert(`Post created: ${this.value}`);
+                    this.value = '';
+                    
+                } catch (error) {
+                    console.error('Error creating post:', error);
+                }
+            }
+        });
+        
+        // Initialize follow buttons
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('follow-btn')) {
+                if (e.target.textContent === 'Follow') {
+                    e.target.textContent = 'Following';
+                    e.target.style.backgroundColor = '#71767b';
+                } else {
+                    e.target.textContent = 'Follow';
+                    e.target.style.backgroundColor = '#1d9bf0';
+                }
+            }
+        });
+        
+        // Load initial data
+        loadRealDataBtn.click();
+    </script>
+</body>
+</html>

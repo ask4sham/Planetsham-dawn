@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlanetSham - Create Tables</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #0f1419;
+            color: #e7e9ea;
+            display: flex;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #1a2228;
+            border-radius: 16px;
+        }
+        
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            color: #1d9bf0;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+        }
+        
+        .progress-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .progress-bar {
+            position: absolute;
+            height: 4px;
+            background: #2f3336;
+            top: 20px;
+            left: 0;
+            right: 0;
+            z-index: 1;
+        }
+        
+        .progress-fill {
+            position: absolute;
+            height: 4px;
+            background: #3ecf8e;
+            top: 20px;
+            left: 0;
+            width: 33%;
+            z-index: 2;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 3;
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #2f3336;
+            color: #e7e9ea;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .step-number.active {
+            background: #3ecf8e;
+        }
+        
+        .step-number.completed {
+            background: #1d9bf0;
+        }
+        
+        .step-title {
+            font-size: 14px;
+            text-align: center;
+        }
+        
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .card {
+            background: #1a2228;
+            border-radius: 16px;
+            padding: 20px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #2f3336;
+            color: #1d9bf0;
+        }
+        
+        .sql-editor {
+            background: #0f1419;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        
+        code {
+            font-family: monospace;
+            color: #e7e9ea;
+            line-height: 1.5;
+        }
+        
+        .sql-keyword {
+            color: #ff7b72;
+        }
+        
+        .sql-function {
+            color: #d2a8ff;
+        }
+        
+        .sql-string {
+            color: #a5d6ff;
+        }
+        
+        .btn {
+            background-color: #3ecf8e;
+            border: none;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            display: inline-block;
+        }
+        
+        .btn:hover {
+            background-color: #35b87c;
+        }
+        
+        .instructions {
+            margin: 15px 0;
+            line-height: 1.6;
+        }
+        
+        .instructions ol {
+            padding-left: 20px;
+            margin: 10px 0;
+        }
+        
+        .instructions li {
+            margin-bottom: 10px;
+        }
+        
+        .success-check {
+            color: #3ecf8e;
+            margin-right: 8px;
+        }
+        
+        .error {
+            color: #ff6b6b;
+        }
+        
+        .success {
+            color: #3ecf8e;
+        }
+        
+        @media (max-width: 900px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+            
+            .progress-container {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            
+            .progress-bar, .progress-fill {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-globe"></i>
+                <span>PlanetSham - Create Database Tables</span>
+            </div>
+            <p>Step 2: Set up your Supabase database tables</p>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+            <div class="progress-fill" id="progressFill"></div>
+            
+            <div class="progress-step">
+                <div class="step-number completed">1</div>
+                <div class="step-title">Connection</div>
+            </div>
+            
+            <div class="progress-step">
+                <div class="step-number active">2</div>
+                <div class="step-title">Create Tables</div>
+            </div>
+            
+            <div class="progress-step">
+                <div class="step-number">3</div>
+                <div class="step-title">Insert Data</div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="card">
+                <h2 class="section-title">Step 1: Create Tables in Supabase</h2>
+                
+                <div class="instructions">
+                    <p>Follow these steps to create the necessary tables:</p>
+                    <ol>
+                        <li>Go to your <a href="https://app.supabase.com" target="_blank" style="color: #3ecf8e;">Supabase Dashboard</a></li>
+                        <li>Select your project</li>
+                        <li>Click on the <strong>SQL Editor</strong> in the left sidebar</li>
+                        <li>Click <strong>New Query</strong></li>
+                        <li>Copy and paste the SQL code from the right panel</li>
+                        <li>Click <strong>Run</strong> to execute the query</li>
+                    </ol>
+                </div>
+                
+                <h2 class="section-title">Required Tables for PlanetSham</h2>
+                <ul class="instructions">
+                    <li><i class="fas fa-check success-check"></i> <strong>users</strong> - Store user information</li>
+                    <li><i class="fas fa-check success-check"></i> <strong>posts</strong> - Store posts content</li>
+                    <li><i class="fas fa-check success-check"></i> <strong>trending_topics</strong> - Store trending data</li>
+                    <li><i class="fas fa-check success-check"></i> <strong>follows</strong> - Manage user relationships</li>
+                </ul>
+                
+                <button class="btn" id="checkTablesBtn">Check Tables</button>
+                <div id="tableCheckResult" style="margin-top: 15px;"></div>
+            </div>
+            
+            <div class="card">
+                <h2 class="section-title">SQL Code for Tables</h2>
+                
+                <div class="sql-editor">
+                    <code>
+<span class="sql-keyword">CREATE TABLE</span> <span class="sql-function">users</span> (
+    id <span class="sql-keyword">UUID DEFAULT</span> gen_random_uuid() <span class="sql-keyword">PRIMARY KEY</span>,
+    username <span class="sql-keyword">TEXT UNIQUE NOT NULL</span>,
+    full_name <span class="sql-keyword">TEXT</span>,
+    avatar_url <span class="sql-keyword">TEXT</span>,
+    created_at <span class="sql-keyword">TIMESTAMP WITH TIME ZONE DEFAULT</span> now()
+);
+
+<span class="sql-keyword">CREATE TABLE</span> <span class="sql-function">posts</span> (
+    id <span class="sql-keyword">BIGINT GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY</span>,
+    user_id <span class="sql-keyword">UUID REFERENCES</span> users(id),
+    content <span class="sql-keyword">TEXT NOT NULL</span>,
+    likes <span class="sql-keyword">BIGINT DEFAULT</span> 0,
+    created_at <span class="sql-keyword">TIMESTAMP WITH TIME ZONE DEFAULT</span> now()
+);
+
+<span class="sql-keyword">CREATE TABLE</span> <span class="sql-function">trending_topics</span> (
+    id <span class="sql-keyword">BIGINT GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY</span>,
+    name <span class="sql-keyword">TEXT NOT NULL</span>,
+    post_count <span class="sql-keyword">BIGINT DEFAULT</span> 0,
+    rank <span class="sql-keyword">INTEGER</span>,
+    created_at <span class="sql-keyword">TIMESTAMP WITH TIME ZONE DEFAULT</span> now()
+);
+
+<span class="sql-keyword">CREATE TABLE</span> <span class="sql-function">follows</span> (
+    id <span class="sql-keyword">BIGINT GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY</span>,
+    follower_id <span class="sql-keyword">UUID REFERENCES</span> users(id),
+    following_id <span class="sql-keyword">UUID REFERENCES</span> users(id),
+    created_at <span class="sql-keyword">TIMESTAMP WITH TIME ZONE DEFAULT</span> now(),
+    <span class="sql-keyword">UNIQUE</span>(follower_id, following_id)
+);
+                    </code>
+                </div>
+                
+                <h2 class="section-title">Enable Row Level Security</h2>
+                
+                <div class="sql-editor">
+                    <code>
+<span class="sql-keyword">-- Enable Row Level Security on all tables</span>
+<span class="sql-keyword">ALTER TABLE</span> users <span class="sql-keyword">ENABLE ROW LEVEL SECURITY</span>;
+<span class="sql-keyword">ALTER TABLE</span> posts <span class="sql-keyword">ENABLE ROW LEVEL SECURITY</span>;
+<span class="sql-keyword">ALTER TABLE</span> trending_topics <span class="sql-keyword">ENABLE ROW LEVEL SECURITY</span>;
+<span class="sql-keyword">ALTER TABLE</span> follows <span class="sql-keyword">ENABLE ROW LEVEL SECURITY</span>;
+
+<span class="sql-keyword">-- Create policies to allow read access to all</span>
+<span class="sql-keyword">CREATE POLICY</span> <span class="sql-string">"Allow public read access"</span> <span class="sql-keyword">ON</span> users
+<span class="sql-keyword">FOR SELECT USING</span> (<span class="sql-keyword">true</span>);
+
+<span class="sql-keyword">CREATE POLICY</span> <span class="sql-string">"Allow public read access"</span> <span class="sql-keyword">ON</span> posts
+<span class="sql-keyword">FOR SELECT USING</span> (<span class="sql-keyword">true</span>);
+
+<span class="sql-keyword">CREATE POLICY</span> <span class="sql-string">"Allow public read access"</span> <span class="sql-keyword">ON</span> trending_topics
+<span class="sql-keyword">FOR SELECT USING</span> (<span class="sql-keyword">true</span>);
+
+<span class="sql-keyword">CREATE POLICY</span> <span class="sql-string">"Allow public read access"</span> <span class="sql-keyword">ON</span> follows
+<span class="sql-keyword">FOR SELECT USING</span> (<span class="sql-keyword">true</span>);
+                    </code>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Supabase Client Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <script>
+        // Initialize Supabase with your credentials
+        const supabaseUrl = 'https://onxmetgbzgkkghzymaqt.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9ueG1ldGdiemdra2doenltYXF0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY1NzA3MjcsImV4cCI6MjA3MjE0NjcyN30.zG5G-uqxiA7Vv57U3INUGRr1YHUSo-8nL16BcGmVupc';
+        
+        // Create Supabase client
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+        
+        // Check if tables exist using a different approach
+        document.getElementById('checkTablesBtn').addEventListener('click', async function() {
+            const resultDiv = document.getElementById('tableCheckResult');
+            resultDiv.innerHTML = '<p>Checking for tables...</p>';
+            
+            try {
+                // Try to query each table directly to see if they exist
+                const tablesToCheck = ['users', 'posts', 'trending_topics', 'follows'];
+                const results = {};
+                
+                for (const table of tablesToCheck) {
+                    try {
+                        // Try to select from the table (limit 0 to avoid large data transfer)
+                        const { error } = await supabase
+                            .from(table)
+                            .select('*')
+                            .limit(0);
+                        
+                        // If no error, table exists
+                        results[table] = !error;
+                    } catch (e) {
+                        results[table] = false;
+                    }
+                }
+                
+                // Display results
+                const existingTables = Object.keys(results).filter(table => results[table]);
+                
+                if (existingTables.length === 0) {
+                    resultDiv.innerHTML = `
+                        <p class="error">No tables found. You need to create them using the SQL code provided.</p>
+                        <p>Follow the instructions on the left to create the tables in your Supabase SQL Editor.</p>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <p class="success">Found ${existingTables.length} table(s):</p>
+                        <ul>
+                            ${existingTables.map(table => `<li><i class="fas fa-check success-check"></i> ${table}</li>`).join('')}
+                        </ul>
+                        ${existingTables.length < 4 ? 
+                            `<p class="error">Some tables are missing. Please create all tables using the SQL code provided.</p>
+                             <p>Missing tables: ${tablesToCheck.filter(table => !results[table]).join(', ')}</p>` : 
+                            `<p class="success">All tables are created successfully! You can now proceed to the next step.</p>`
+                        }
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <p class="error">Error checking tables: ${error.message}</p>
+                    <p>This might be because:</p>
+                    <ul>
+                        <li>You haven't created the tables yet</li>
+                        <li>There's a connection issue with Supabase</li>
+                        <li>Row Level Security is preventing access</li>
+                    </ul>
+                    <p>Try creating the tables first using the SQL code provided, then check again.</p>
+                `;
+            }
+        });
+        
+        // Initialize progress bar
+        document.getElementById('progressFill').style.width = '33%';
+    </script>
+</body>
+</html>
