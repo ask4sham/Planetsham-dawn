@@ -27,7 +27,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
-        <Analytics />
+        {/* Debug is temporary—remove once you’ve confirmed events */}
+        <Analytics debug />
       </body>
     </html>
   );
